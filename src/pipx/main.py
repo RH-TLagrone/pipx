@@ -909,6 +909,7 @@ def _add_ensurepath(subparsers: argparse._SubParsersAction, shared_parser: argpa
 
 
 def _add_environment(subparsers: argparse._SubParsersAction, shared_parser: argparse.ArgumentParser) -> None:
+    variables = ENVIRONMENT_VARIABLES + VIRTUAL_ENVIRONMENT_VARIABLES
     p = subparsers.add_parser(
         "environment",
         formatter_class=LineWrapRawTextHelpFormatter,
@@ -922,16 +923,10 @@ def _add_environment(subparsers: argparse._SubParsersAction, shared_parser: argp
             Available variables:
             """
         )
-        + textwrap.fill(", ".join(ENVIRONMENT_VARIABLES), break_long_words=False),
+        + textwrap.fill(", ".join(variables), break_long_words=False),
         parents=[shared_parser],
     )
-    p.add_argument(
-        "--value",
-        "-V",
-        choices=ENVIRONMENT_VARIABLES + VIRTUAL_ENVIRONMENT_VARIABLES,
-        metavar="VARIABLE",
-        help="Print the value of the variable.",
-    )
+    p.add_argument("--value", "-V", choices=variables, metavar="VARIABLE", help="Print the value of the variable.")
 
 
 def get_command_parser() -> Tuple[argparse.ArgumentParser, Dict[str, argparse.ArgumentParser]]:

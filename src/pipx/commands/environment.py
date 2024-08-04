@@ -26,6 +26,7 @@ VIRTUAL_ENVIRONMENT_VARIABLES = [
     "PIPX_VENV_CACHEDIR",
     "PIPX_STANDALONE_PYTHON_CACHEDIR",
 ]
+assert not any(x in ENVIRONMENT_VARIABLES for x in VIRTUAL_ENVIRONMENT_VARIABLES)
 
 
 def environment(value: str) -> ExitCode:
@@ -44,6 +45,8 @@ def environment(value: str) -> ExitCode:
         "USE_EMOJI": str(EMOJI_SUPPORT).lower(),
         "PIPX_HOME_ALLOW_SPACE": str(paths.ctx.allow_spaces_in_home_path).lower(),
     }
+    assert all(key in ENVIRONMENT_VARIABLES or key in VIRTUAL_ENVIRONMENT_VARIABLES for key in derived_values)
+
     if value is None:
         print("Environment variables (set by user):")
         print("")
